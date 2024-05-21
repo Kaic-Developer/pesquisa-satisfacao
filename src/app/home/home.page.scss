@@ -1,0 +1,171 @@
+/* Declaração da Fonte */
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../../assets/fonts/Montserrat-Regular.ttf') format('truetype'),
+  url('../../assets/fonts/Montserrat-Bold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../../assets/fonts/Montserrat-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+ion-content {
+  background: #6879ba;
+  --background: transparent;
+  font-family: 'Montserrat', sans-serif;  /* Aplica a fonte Montserrat */
+}
+
+body, ion-content {
+  height: 100%;
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;  /* Aplica a fonte Montserrat */
+}
+
+.logo_t1 {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 3vh;  /* Ajuste a partir do topo */
+  left: 50%;
+  transform: translateX(-50%);  /* Centralizar horizontalmente */
+  width: 35%;  /* Largura da logo */
+  height: auto; /* Altura da logo */
+  z-index: 10;
+}
+
+#container {
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 20vh; /* Ajuste a posição para ficar entre a logo e o personagem */
+  box-sizing: border-box;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+.bubble {
+  position: relative;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.box_tela01 {
+  position: relative;
+  width: 733px;
+
+}
+
+.box_tela01 ion-img {
+  width: 100%;
+  height: auto;
+
+}
+
+.intro-text {
+  font-size: 35px;
+  margin-top: 20px; /* Ajuste conforme necessário */
+  z-index: 2;
+  position: absolute;
+  top: 25%;
+  width: 100%;
+}
+
+ion-item {
+  bottom: 23vh;
+  margin-top: 1vh; /* Espaçamento entre os inputs */
+  z-index: 2;
+  --background: transparent;
+  --border-color: transparent;
+  width: 100%;
+}
+
+ion-input {
+  text-align: center;
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --background: transparent;
+  --placeholder-color: #bcbec0;
+  font-size: 40px;
+  --color: #000000; /* Cor do texto digitado, ajuste conforme necessário */
+  font-family: 'Montserrat', sans-serif;  /* Aplica a fonte Montserrat */
+  font-weight: bold;  /* Deixa o texto em negrito */
+  border: none;
+  box-shadow: none;
+}
+
+
+
+
+ion-fab-button {
+  width: 100px;
+  height: 100px;
+ margin: 3vh;
+  --background: #4caf50;
+  --color: #ffffff;
+
+}
+
+.large-icon {
+  font-size: 3em; /* Ajuste conforme necessário para o tamanho desejado */
+}
+
+
+
+.custom-fab-button{
+  width: 100px;
+  height: 100px;
+  margin: 3vh;
+}
+
+.person_tela01 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 45vh;  /* Ajuste a partir do topo */
+  left: 50%;
+  transform: translateX(-50%);  /* Centralizar horizontalmente */
+  width: 540px;  /* Largura da imagem */
+  z-index: 10;
+}
+
+.footer-bar {
+  position: absolute;
+  top: 72vh;  /* Ajuste a posição inicial */
+  left: -25%;  /* Ajuste para garantir cobertura total */
+  width: 150%;
+  height: 50vh;  /* Altura maior para cobertura completa */
+  transform: rotate(20deg);  /* Ajuste o ângulo conforme necessário */
+  background-color: #ffffff;
+  z-index: 5;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  #container {
+    width: 70%;
+    top: 25vh; /* Ajuste para telas menores */
+  }
+
+  .intro-text {
+    font-size: 1em;
+    top: 20%; /* Ajuste conforme necessário */
+  }
+
+  .person_tela01 {
+    width: 300px;
+    top: 53vh;  /* Ajuste para telas menores */
+  }
+}

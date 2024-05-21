@@ -1,0 +1,55 @@
+<ion-header>
+  <div class="logo_t1">
+    <ion-img src="assets/img/logo_tela02.png" class="logo"></ion-img>
+  </div>
+</ion-header>
+
+<ion-content>
+  <ion-label class="intro-text"><b class="number_question">10</b>A sua situação foi devidamente <br>resolvida tal como gostaria?</ion-label>
+  <div class="responses">
+    <ion-list>
+      <ion-list-header></ion-list-header>
+      <ion-item class="center-item">
+        <ion-img [src]="resposta === 'Muito Bom' ? 'assets/img/btn_muitoBomHover.png' : 'assets/img/btn_muitoBom.png'"
+                 class="custom-radio"
+                 (click)="selecionarResposta('Muito Bom')"></ion-img>
+      </ion-item>
+      <ion-item class="center-item">
+        <ion-img [src]="resposta === 'Bom' ? 'assets/img/btn_bomHover.png' : 'assets/img/btn_bom.png'"
+                 class="custom-radio"
+                 (click)="selecionarResposta('Bom')"></ion-img>
+      </ion-item>
+      <ion-item class="center-item">
+        <ion-img [src]="resposta === 'Pouco Satisfeito' ? 'assets/img/btn_poucoSatisfeitoHover.png' : 'assets/img/btn_poucoSatisfeito.png'"
+                 class="custom-radio"
+                 (click)="selecionarResposta('Pouco Satisfeito')"></ion-img>
+      </ion-item>
+      <ion-item class="center-item">
+        <ion-img [src]="resposta === 'Totalmente Insatisfeito' ? 'assets/img/btn_totalmenteInsatisfeitoHover.png' : 'assets/img/btn_totalmenteInsatisfeito.png'"
+                 class="custom-radio"
+                 (click)="selecionarResposta('Totalmente Insatisfeito')"></ion-img>
+      </ion-item>
+    </ion-list>
+
+    <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+      <ion-fab-button color="danger" (click)="voltar()">
+        <img src="assets/img/btn_back.png" alt="Back Button">
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <div class="custom-fab-button" (click)="proxima()">
+      <img src="assets/img/btn_play.png" alt="Play Button">
+    </div>
+  </ion-fab>
+
+  <div class="gif-container">
+    <img *ngIf="isDefaultGif" src="assets/animations/unnamed-3.gif" alt="" class="default-gif">
+    <img *ngIf="!isDefaultGif" [src]="gifSrc" alt="" class="response-gif">
+    <div *ngIf="resposta" class="response-text">{{ resposta }}</div>
+    <img *ngIf="additionalGifSrc" [src]="additionalGifSrc" alt="" class="additional-gif">
+  </div>
+
+  <div class="footer-bar"></div>
+</ion-content>

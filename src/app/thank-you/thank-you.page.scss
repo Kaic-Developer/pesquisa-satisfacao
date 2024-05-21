@@ -1,0 +1,257 @@
+/* Declaração da Fonte */
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../../assets/fonts/Montserrat-Regular.ttf') format('truetype'),
+  url('../../assets/fonts/Montserrat-Bold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../../assets/fonts/Montserrat-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../../assets/fonts/Montserrat-Medium.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+ion-content {
+  background: white;
+  --background: transparent;
+  font-family: 'Montserrat', sans-serif; /* Aplica a fonte Montserrat */
+  overflow: hidden; /* Adicionado para evitar a rolagem */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Ajusta o conteúdo para preencher o espaço */
+  height: 100vh; /* Garante que o conteúdo preencha a altura da janela */
+}
+
+body, ion-content {
+  height: 100%;
+  margin: 0;
+  font-family: 'Montserrat', sans-serif; /* Aplica a fonte Montserrat */
+}
+
+.logo_t1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 10vh; /* Ajuste a partir do topo */
+  left: 50%;
+  transform: translateX(-50%); /* Centralizar horizontalmente */
+  width: 300px; /* Largura da logo */
+  height: auto; /* Altura da logo */
+  z-index: 10;
+}
+
+#container {
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 20vh; /* Ajuste a posição para ficar entre a logo e o personagem */
+  box-sizing: border-box;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+.bubble {
+  position: relative;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.intro-text {
+  font-size: 35px;
+  margin-top: 10px; /* Ajuste conforme necessário */
+  z-index: 2;
+  position: absolute;
+  top: 15%; /* Ajuste para mover o texto mais para cima */
+  width: 100%;
+  text-align: center; /* Centralizar o texto */
+}
+
+ion-item {
+  top: 1vh;
+  margin-top: 1vh; /* Espaçamento entre os inputs */
+  z-index: 2;
+  --background: transparent;
+  --border-color: transparent;
+  width: 100%;
+}
+
+.responses {
+  margin-top: 18vh; /* Ajuste conforme necessário */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1; /* Adicionado para ocupar espaço disponível */
+}
+
+ion-fab-button {
+
+  width: 100px;
+  height: 100px;
+  margin: 5vh 0vh 25vh 5vh;
+  --background: #4caf50;
+  --color: #ffffff;
+}
+
+ion-label {
+  font-size: 40px;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.custom-fab-button {
+  width: 100px;
+  height: 100px;
+  margin: 2vh ;
+
+}
+
+.person_tela01 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 65vh; /* Ajuste a partir do topo */
+  left: 50%;
+  transform: translateX(-50%); /* Centralizar horizontalmente */
+  width: 367px; /* Largura da imagem */
+  z-index: 10;
+}
+
+.person_thankyou {
+  height: 1250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 22vh; /* Ajuste a partir do topo */
+  left: 75%;
+  transform: translateX(-50%); /* Centralizar horizontalmente */
+  width: auto; /* Largura da imagem */
+  z-index: 10;
+}
+
+.thank_youF {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 35vh; /* Ajuste a partir do topo */
+  left: 35%;
+  transform: translateX(-50%); /* Centralizar horizontalmente */
+  width: 460px; /* Largura da imagem */
+  z-index: 10;
+
+}
+
+.footer-bar {
+  position: fixed;
+  top: 85vh; /* Ajuste a posição inicial */
+  left: -25%; /* Ajuste para garantir cobertura total */
+  width: 150%;
+  height: 30vh; /* Altura maior para cobertura completa */
+  background: #6879ba;
+  z-index: 5;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  #container {
+    width: 70%;
+    top: 25vh; /* Ajuste para telas menores */
+  }
+
+  .intro-text {
+    font-size: 1em;
+    top: 20%; /* Ajuste conforme necessário */
+  }
+
+  .person_tela01 {
+    width: 300px;
+    top: 53vh; /* Ajuste para telas menores */
+  }
+}
+
+.custom-radio {
+  width: 100%;
+  height: 100px;
+  cursor: pointer;
+}
+
+.center-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.thank-you-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+ion-button {
+  margin-top: 20px;
+}
+
+.person_tela01 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 65vh; /* Ajuste a partir do topo */
+  left: 50%;
+  transform: translateX(-50%); /* Centralizar horizontalmente */
+  width: 367px; /* Largura da imagem */
+  z-index: 10;
+}
+
+
+
+.video {
+  width: 100%;
+  height: auto;
+
+}
+
+.person_tela03{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 80vh; /* Ajuste a partir do topo */
+  left: 90%;
+  transform: translateX(-50%); /* Centralizar horizontalmente */
+  width: 250px; /* Largura da imagem */
+  z-index: 10;
+
+}
+
+.response-text {
+  margin-top: 10px;
+  font-size: 20px;
+  text-align: center;
+  color: white;
+  font-size: 40px;
+  font-family: 'Montserrat-Medium', sans-serif;
+  width: 100%; /* Garante que o texto fique alinhado ao vídeo */
+}

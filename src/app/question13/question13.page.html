@@ -1,0 +1,35 @@
+<ion-header>
+  <div class="logo_t1">
+    <ion-img src="assets/img/logo_tela02.png" class="logo"></ion-img>
+  </div>
+</ion-header>
+
+<ion-content>
+  <ion-label class="intro-text">Gostaria de apresentar a sua sugestão?</ion-label>
+
+  <div class="responses">
+    <ion-label position="floating" class="text-label">Escreva sua resposta</ion-label>
+    <ion-item class="input-item">
+
+      <ion-textarea class="text-area" [(ngModel)]="resposta"></ion-textarea>
+    </ion-item>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button color="danger" (click)="voltar()">
+      <img src="assets/img/btn_back.png" alt="Botão Voltar">
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="success" (click)="proxima()">
+      <img src="assets/img/btn_play.png" alt="Botão Próximo">
+    </ion-fab-button>
+  </ion-fab>
+
+  <div class="gif-container">
+    <img src="assets/animations/unnamed-3.gif" alt="" class="default-gif">
+  </div>
+
+  <div class="footer-bar"></div>
+</ion-content>

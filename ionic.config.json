@@ -1,0 +1,7 @@
+{
+  "name": "AGT",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

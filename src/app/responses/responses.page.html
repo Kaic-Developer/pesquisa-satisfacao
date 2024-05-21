@@ -1,0 +1,60 @@
+<ion-header *ngIf="showContent">
+  <ion-toolbar>
+    <ion-title class="title_response">Respostas dos Usuários</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" *ngIf="showContent">
+  <ion-list *ngIf="responses.length > 0; else noResponses">
+    <ion-item *ngFor="let response of responses" detail="true" (click)="toggleDetails(response, $event)">
+      <ion-label>
+        <h2>{{ response.nome }}</h2>
+        <p>Idade: {{ response.idade }}</p>
+        <ion-button expand="block" fill="outline" (click)="toggleDetails(response, $event)">Detalhes</ion-button>
+        <ion-button expand="block" color="danger" (click)="confirmDelete(response, $event)">Deletar</ion-button>
+        <div *ngIf="response.showDetails" class="details">
+          <p>Resposta 1: {{ response.resposta1 }}</p>
+          <p>Resposta 2: {{ response.resposta2 }}</p>
+          <p>Resposta 3: {{ response.resposta3 }}</p>
+          <p>Resposta 4: {{ response.resposta4 }}</p>
+          <p>Resposta 5: {{ response.resposta5 }}</p>
+          <p>Resposta 6: {{ response.resposta6 }}</p>
+          <p>Resposta 7: {{ response.resposta7 }}</p>
+          <p>Resposta 8: {{ response.resposta8 }}</p>
+          <p>Resposta 9: {{ response.resposta9 }}</p>
+          <p>Resposta 10: {{ response.resposta10 }}</p>
+          <p>Resposta 11: {{ response.resposta11 }}</p>
+          <p>Resposta 12: {{ response.resposta12 }}</p>
+
+        </div>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-fab vertical="bottom" class="custom-fab-button" horizontal="start" slot="fixed">
+    <ion-fab-button color="danger" (click)="voltar()">
+      <img src="assets/img/btn_back.png" alt="Botão Voltar">
+    </ion-fab-button>
+  </ion-fab>
+
+  <div id="chart" class="chart"></div>
+
+  <ng-template #noResponses>
+    <ion-item lines="none">
+      <ion-label class="no-responses">Nenhuma pesquisa cadastrada.</ion-label>
+    </ion-item>
+  </ng-template>
+</ion-content>
+
+<ng-template #noAccess>
+  <ion-content class="ion-padding">
+    <ion-label class="no-responses">Acesso não autorizado.</ion-label>
+  </ion-content>
+</ng-template>
+
+<style>
+  .chart {
+    width: 100%;
+    height: 400px;
+  }
+</style>

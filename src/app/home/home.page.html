@@ -1,0 +1,40 @@
+<ion-header>
+
+    <ion-img src="assets/img/logo_tela01.png" class="logo_t1"></ion-img>
+
+</ion-header>
+
+
+<ion-content class="ion-padding home-page">
+  <div id="container" class="bubble">
+    <div class="box_tela01">
+      <ion-img src="assets/img/box_tela01.png"></ion-img>
+      <p class="intro-text">A sua opinião vale muito para nós</p>
+      <ion-item lines="none">
+        <ion-input [(ngModel)]="nome" placeholder="Qual o seu nome?"></ion-input>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-input type="number" [(ngModel)]="idade" placeholder="Qual a sua idade?"></ion-input>
+      </ion-item>
+    </div>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <div class="custom-fab-button" (click)="iniciar()">
+      <img src="assets/img/btn_play.png" alt="Play Button">
+    </div>
+  </ion-fab>
+
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button (click)="irParaResponses()">
+      <ion-icon name="lock-closed" class="large-icon"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
+
+<div class="person_tela01">
+  <ion-img src="assets/animations/unnamed-1.gif"></ion-img>
+</div>
+
+<div class="footer-bar"></div>

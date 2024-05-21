@@ -1,0 +1,30 @@
+<ion-header>
+  <div class="logo_t1">
+    <ion-img src="assets/img/logo_tela02.png" class="logo"></ion-img>
+  </div>
+</ion-header>
+
+<!--<ion-button expand="full" color="success" (click)="finalizar()">Finalizar</ion-button>-->
+<ion-content class="">
+<!--  <div class="thank-you-message">-->
+<!--    <h2>Obrigado por participar!</h2>-->
+<!--    <p>Sua opinião é muito importante para nós.</p>-->
+<!--  </div>-->
+
+  <img class="thank_youF" src="assets/img/thank_you.png">
+  <img class="person_thankyou" src="assets/animations/unnamed-3.gif" alt="Person_ThankYou">
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <div class="custom-fab-button" (click)="finalizar()">
+      <img src="assets/img/btn_play.png" alt="Play Button">
+    </div>
+  </ion-fab>
+
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <div class="custom-fab-button" (click)="voltar()">
+      <img src="assets/img/btn_back.png" alt="Play Button">
+    </div>
+  </ion-fab>
+
+  <div class="footer-bar"></div>
+</ion-content>

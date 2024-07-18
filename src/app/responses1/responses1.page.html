@@ -1,0 +1,152 @@
+<ion-header *ngIf="showContent">
+  <ion-toolbar>
+    <ion-title class="title_response">Respostas dos Usuários</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" *ngIf="showContent">
+  <ion-list>
+    <ion-item *ngFor="let question of questions" (click)="openModal(question)">
+      <ion-label>
+        <h2>{{ question }}</h2>
+        <p>Clique para ver as respostas</p>
+      </ion-label>
+      <ion-button slot="end" fill="outline" (click)="openModal(question)">
+        Ver respostas
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="block" color="primary" (click)="goBack()">
+    <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+    Voltar
+  </ion-button>
+
+  <ion-modal [isOpen]="isModalOpen" (willDismiss)="closeModal()" cssClass="custom-modal">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ selectedQuestion }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeModal()">Fechar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <div id="modal-chart" class="chart"></div>
+        <ion-item>
+          <ion-label>Filtrar por:</ion-label>
+          <ion-select [(ngModel)]="selectedFilter" (ionChange)="applyFilter()">
+            <ion-select-option value="all">Todos</ion-select-option>
+            <ion-select-option value="male">Homem</ion-select-option>
+            <ion-select-option value="female">Mulher</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-list *ngIf="responseCounts.length > 0; else noData">
+          <ion-item *ngFor="let response of responseCounts">
+            <ion-label>
+              <h2>{{ response.text }}</h2>
+              <p>Total de votos: {{ response.count }} ({{ response.percentage }}%)</p>
+              <ion-button fill="outline" slot="end" (click)="openPersonDetailModal(response.text)">
+                Visualizar Pessoas
+              </ion-button>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <ng-template #noData>
+          <ion-item lines="none">
+            <ion-label>Nenhum registro localizado</ion-label>
+          </ion-item>
+        </ng-template>
+        <ion-button expand="block" *ngIf="filteredResponses.length > 0" (click)="exportModalAsPDF()">
+          Exportar PDF
+        </ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal [isOpen]="isPersonDetailModalOpen" (willDismiss)="closePersonDetailModal()" cssClass="custom-modal">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Pessoas que votaram "{{ selectedResponse }}"</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closePersonDetailModal()">Fechar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-list *ngIf="selectedResponsePeople.length > 0; else noPeople">
+          <ion-item *ngFor="let person of selectedResponsePeople">
+            <ion-label>
+              <h2>{{ person.nome }}</h2>
+              <p>Idade: {{ person.idade }}</p>
+              <p>Sexo: {{ person.sexo }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <ng-template #noPeople>
+          <ion-item lines="none">
+            <ion-label>Nenhuma pessoa encontrada</ion-label>
+          </ion-item>
+        </ng-template>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+
+<ng-template #noAccess>
+  <ion-content class="ion-padding">
+    <ion-label class="no-responses">Acesso não autorizado.</ion-label>
+  </ion-content>
+</ng-template>
+
+<style>
+  ion-header, ion-toolbar, ion-title {
+    --background: #f8f9fa;
+    --color: #343a40;
+  }
+
+  ion-content {
+    --background: #ffffff;
+    --color: #343a40;
+  }
+
+  ion-item {
+    --background: #f8f9fa;
+    --color: #343a40;
+  }
+
+  ion-label {
+    --color: #343a40;
+  }
+
+  ion-button {
+    --border-radius: 12px;
+    --padding-start: 10px;
+    --padding-end: 10px;
+    --background: #007bff;
+    --color: #fff;
+  }
+
+  ion-modal {
+    --background: #ffffff;
+    --color: #343a40;
+  }
+
+  /* Removendo possíveis margens ou padding */
+  .ion-padding, .ion-content, .ion-item, .ion-button, ion-modal, ion-header, ion-toolbar {
+    margin: 0;
+    padding: 0;
+  }
+
+  .chart {
+    width: 100%;
+    height: 400px;
+  }
+
+  .custom-modal {
+    --height: 90%;
+    --max-height: 90%;
+  }
+</style>

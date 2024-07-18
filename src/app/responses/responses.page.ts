@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
+import * as XLSX from 'xlsx';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import * as echarts from 'echarts';
 
 @Component({
@@ -9,10 +12,26 @@ import * as echarts from 'echarts';
   styleUrls: ['./responses.page.scss'],
 })
 export class ResponsesPage implements OnInit {
+  questions: string[] = [
+    'Indique a natureza da sua necessidade',
+    'Como avalia o atendimento pelo agente da polícia fiscal?',
+    'Como avalia o tempo de espera que levou para ser atendido?',
+    'Como avalia o tempo de resposta para ser atendida a sua situação?',
+    'O funcionário demonstrou atenção e disponibilidade para responder às suas preocupações?',
+    'As acomodações que encontrou foram-lhe favoráveis?',
+    'Os sistemas tecnológicos estiveram funcionais durante o atendimento?',
+    'O tempo de interacção com o colaborador atingiu as suas expectativas?',
+    'Como avalia a capacidade técnica do colaborador em resolver a sua situação?',
+    'A sua situação foi devidamente resolvida tal como gostaria?',
+    'Como avalia o nível de atendimento na AGT?',
+    'Gostaria de apresentar a sua sugestão?'
+  ];
   responses: any[] = [];
-  chartOptions: any;
-  chartInstance: any;
-  showContent: boolean = false; // Variable to control the display of the content
+  filteredResponses: any[] = [];
+  showContent: boolean = false;
+  startDate: string = '';
+  endDate: string = '';
+  selectedFilter: string = 'all';
 
   constructor(
     private navCtrl: NavController,
@@ -21,7 +40,9 @@ export class ResponsesPage implements OnInit {
   ) {}
 
   async ngOnInit() {
-    // Initially, do not load responses or chart
+    // Carregar respostas no início
+    this.responses = await this.dataService.getAllResponses();
+    this.filteredResponses = this.responses;
   }
 
   async ionViewWillEnter() {
@@ -48,16 +69,26 @@ export class ResponsesPage implements OnInit {
           handler: async (data) => {
             if (data.password === 'agt@01') {
               this.showContent = true;
-              this.responses = await this.dataService.getAllResponses();
-              this.updateChart();
-            } else {
-              this.alertController
-                .create({
+              try {
+                this.responses = await this.dataService.getAllResponses();
+                this.filteredResponses = this.responses;
+                console.log('Respostas carregadas:', this.responses); // Adicione este log
+              } catch (error) {
+                console.error('Erro ao carregar respostas:', error);
+                const errorAlert = await this.alertController.create({
                   header: 'Erro',
-                  message: 'Senha incorreta!',
+                  message: 'Erro ao carregar respostas. Tente novamente.',
                   buttons: ['OK'],
-                })
-                .then((alert) => alert.present());
+                });
+                await errorAlert.present();
+              }
+            } else {
+              const errorAlert = await this.alertController.create({
+                header: 'Erro',
+                message: 'Senha incorreta!',
+                buttons: ['OK'],
+              });
+              await errorAlert.present();
               this.navCtrl.navigateRoot('/home');
             }
           },
@@ -68,91 +99,74 @@ export class ResponsesPage implements OnInit {
     await alert.present();
   }
 
-  ionViewDidEnter() {
-    // Ensure the chart is rendered when the view is entered
-    if (this.showContent) {
-      this.renderChart();
-      window.addEventListener('resize', this.resizeChart.bind(this));
+  filterResponses() {
+    if (this.startDate && this.endDate) {
+      const start = new Date(this.startDate);
+      const end = new Date(this.endDate);
+      this.filteredResponses = this.responses.filter(r => {
+        const date = new Date(r.date); // Certifique-se de que o campo de data é 'date'
+        return date >= start && date <= end;
+      });
+      console.log('Respostas filtradas:', this.filteredResponses); // Adicione este log
+    } else {
+      this.filteredResponses = this.responses;
+      console.log('Sem filtro de data, respostas:', this.filteredResponses); // Adicione este log
     }
   }
 
-  ionViewWillLeave() {
-    // Cleanup the resize event listener
-    window.removeEventListener('resize', this.resizeChart.bind(this));
+  async goToNextPage() {
+    if (!this.startDate || !this.endDate) {
+      const alert = await this.alertController.create({
+        header: 'Erro',
+        message: 'Por favor, selecione um intervalo de datas.',
+        buttons: ['OK'],
+      });
+      await alert.present();
+      return;
+    }
+
+    this.navCtrl.navigateForward(`/responses1?startDate=${this.startDate}&endDate=${this.endDate}`);
   }
 
-  toggleDetails(response: any, event: Event) {
-    event.stopPropagation();
-    response.showDetails = !response.showDetails;
+  formatDate(date: string): string {
+    const dateObj = new Date(date);
+    const day = ('0' + dateObj.getDate()).slice(-2);
+    const month = ('0' + (dateObj.getMonth() + 1)).slice(-2);
+    const year = dateObj.getFullYear();
+    return `${day}/${month}/${year}`;
   }
 
-  async confirmDelete(response: any, event: Event) {
-    event.stopPropagation();
+  calculateResponseCounts(question: string, filteredResponses: any[]): { text: string, count: number, percentage: number }[] {
+    const questionIndex = this.questions.indexOf(question) + 1;
+    const responseCountMap: { [key: string]: number } = {};
 
-    const alert = await this.alertController.create({
-      header: 'Confirmação',
-      message: 'Digite a senha para deletar esta resposta:',
-      inputs: [
-        {
-          name: 'password',
-          type: 'password',
-          placeholder: 'Senha',
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-        },
-        {
-          text: 'Deletar',
-          handler: async (data) => {
-            if (data.password === 'agt@01') {
-              await this.deleteResponse(response);
-            } else {
-              const errorAlert = await this.alertController.create({
-                header: 'Erro',
-                message: 'Senha incorreta!',
-                buttons: ['OK'],
-              });
-              await errorAlert.present();
-            }
-          },
-        },
-      ],
-    });
-
-    await alert.present();
-  }
-
-  async deleteResponse(response: any) {
-    this.responses = this.responses.filter((res) => res !== response);
-    await this.dataService.set('responses', this.responses);
-    this.updateChart(); // Update the chart after deleting a response
-  }
-
-  voltar(): void {
-    this.navCtrl.navigateBack('/home');
-  }
-
-  updateChart() {
-    const chartData: { [key: string]: number } = {
-      'Muito Bom': 0,
-      'Bom': 0,
-      'Pouco Satisfeito': 0,
-      'Totalmente Insatisfeito': 0,
-    };
-
-    this.responses.forEach((response) => {
-      for (let i = 1; i <= 12; i++) {
-        const resposta = response[`resposta${i}`];
-        if (resposta && chartData.hasOwnProperty(resposta)) {
-          chartData[resposta]++;
+    filteredResponses.forEach(response => {
+      const answer = response[`resposta${questionIndex}`];
+      if (answer !== undefined && answer !== null) {
+        if (!responseCountMap[answer]) {
+          responseCountMap[answer] = 0;
         }
+        responseCountMap[answer]++;
       }
     });
 
-    this.chartOptions = {
+    const totalResponses = filteredResponses.length;
+
+    return Object.keys(responseCountMap).map(key => ({
+      text: key,
+      count: responseCountMap[key],
+      percentage: parseFloat(((responseCountMap[key] / totalResponses) * 100).toFixed(2))
+    }));
+  }
+
+  async renderChart(question: string, filteredResponses: any[]): Promise<string> {
+    const chartDom = document.createElement('div');
+    chartDom.style.width = '800px';
+    chartDom.style.height = '500px';
+
+    const chartInstance = echarts.init(chartDom);
+    const responseCounts = this.calculateResponseCounts(question, filteredResponses);
+    const chartOptions = {
       title: {
         text: 'Distribuição das Respostas',
         left: 'center',
@@ -168,9 +182,9 @@ export class ResponsesPage implements OnInit {
           name: 'Respostas',
           type: 'pie',
           radius: '50%',
-          data: Object.keys(chartData).map((key) => ({
-            value: chartData[key],
-            name: key,
+          data: responseCounts.map(response => ({
+            value: response.count,
+            name: `${response.text} (${response.percentage}%)`,
           })),
           emphasis: {
             itemStyle: {
@@ -183,23 +197,72 @@ export class ResponsesPage implements OnInit {
       ],
     };
 
-    if (this.chartInstance) {
-      this.chartInstance.setOption(this.chartOptions);
-    } else {
-      this.renderChart();
-    }
+    chartInstance.setOption(chartOptions);
+
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(chartInstance.getDataURL({
+          pixelRatio: 2,
+          backgroundColor: '#fff'
+        }));
+      }, 1000); // Aguarda 1 segundo para garantir que o gráfico seja renderizado
+    });
   }
 
-  renderChart() {
-    const chartDom = document.getElementById('chart')!;
-    this.chartInstance = echarts.init(chartDom);
-    this.chartInstance.setOption(this.chartOptions);
-    this.resizeChart(); // Ensure the chart is resized correctly
-  }
+  async downloadPDF() {
+    const doc = new jsPDF({
+      orientation: 'landscape',
+      unit: 'px', // Define a unidade como pixels
+      format: [550, 500] // Define a largura e altura em pixels
+    });
 
-  resizeChart() {
-    if (this.chartInstance) {
-      this.chartInstance.resize();
+    const startDateFormatted = this.formatDate(this.startDate);
+    const endDateFormatted = this.formatDate(this.endDate);
+
+    for (let i = 0; i < this.questions.length; i++) {
+      const question = this.questions[i];
+      if (i > 0) doc.addPage();
+
+      doc.setFontSize(18);
+      doc.text(question, 40, 40);
+
+      const chartImage = await this.renderChart(question, this.filteredResponses);
+      doc.addImage(chartImage, 'PNG', 40, 60, 500, 300); // Ajustado para a largura do a4
+
+      const responseCounts = this.calculateResponseCounts(question, this.filteredResponses);
+      const data = responseCounts.map(response => [
+        response.text,
+        response.count,
+        `${response.percentage}%`
+      ]);
+
+      (doc as any).autoTable({
+        head: [['Resposta', 'Total de Votos', 'Percentagem']],
+        body: data,
+        startY: 370,
+        theme: 'grid',
+        styles: {
+          fontSize: 10,
+          cellPadding: 4
+        },
+        columnStyles: {
+          0: { cellWidth: 200 },
+          1: { cellWidth: 60 },
+          2: { cellWidth: 60 }
+        }
+      });
+
+      const totalMen = this.filteredResponses.filter(r => r.sexo === 'Masculino').length;
+      const totalWomen = this.filteredResponses.filter(r => r.sexo === 'Feminino').length;
+      const peopleText = this.selectedFilter === 'male' ? `Total de homens: ${totalMen}` :
+        this.selectedFilter === 'female' ? `Total de mulheres: ${totalWomen}` :
+          `Total de homens: ${totalMen}, Total de mulheres: ${totalWomen}`;
+
+      doc.setFontSize(12);
+      doc.text(peopleText, 40, (doc as any).lastAutoTable.finalY + 20);
     }
+
+    const fileName = `Respostas_${startDateFormatted}_a_${endDateFormatted}.pdf`;
+    doc.save(fileName);
   }
 }

@@ -99,8 +99,8 @@ ion-item {
 
 ion-fab-button {
 
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   margin: 5vh 0vh 25vh 5vh;
   --background: #4caf50;
   --color: #ffffff;
@@ -113,8 +113,8 @@ ion-label {
 }
 
 .custom-fab-button {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   margin: 2vh ;
 
 }
@@ -132,12 +132,12 @@ ion-label {
 }
 
 .person_thankyou {
-  height: 1250px;
+  height: 1100px;
   display: flex;
   justify-content: center;
   align-items: center;
   position: fixed;
-  top: 22vh; /* Ajuste a partir do topo */
+  top: 20vh; /* Ajuste a partir do topo */
   left: 75%;
   transform: translateX(-50%); /* Centralizar horizontalmente */
   width: auto; /* Largura da imagem */

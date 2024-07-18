@@ -17,26 +17,25 @@
 ion-content {
   background: #6879ba;
   --background: transparent;
-  font-family: 'Montserrat', sans-serif;  /* Aplica a fonte Montserrat */
+  font-family: 'Montserrat', sans-serif;
 }
 
 body, ion-content {
   height: 100%;
   margin: 0;
-  font-family: 'Montserrat', sans-serif;  /* Aplica a fonte Montserrat */
+  font-family: 'Montserrat', sans-serif;
 }
 
 .logo_t1 {
-
   display: flex;
   justify-content: center;
   align-items: center;
   position: fixed;
-  top: 3vh;  /* Ajuste a partir do topo */
+  top: 3vh;
   left: 50%;
-  transform: translateX(-50%);  /* Centralizar horizontalmente */
-  width: 35%;  /* Largura da logo */
-  height: auto; /* Altura da logo */
+  transform: translateX(-50%);
+  width: 25%;
+  height: auto;
   z-index: 10;
 }
 
@@ -45,8 +44,9 @@ body, ion-content {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 20vh; /* Ajuste a posição para ficar entre a logo e o personagem */
+  top: 15vh;
   box-sizing: border-box;
+  width: 90%;
   max-width: 90%;
   margin: 0 auto;
 }
@@ -57,76 +57,85 @@ body, ion-content {
   display: flex;
   flex-direction: column;
   align-items: center;
+  z-index: 5; /* Garantir que a bolha esteja visível */
 }
 
 .box_tela01 {
   position: relative;
-  width: 733px;
-
+  width: 80%;
+  max-width: 733px;
+  z-index: 5; /* Garantir que a caixa esteja visível */
 }
 
 .box_tela01 ion-img {
   width: 100%;
   height: auto;
+  z-index: 5; /* Garantir que a imagem esteja visível */
+}
 
+.overlay-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  z-index: 10; /* Garantir que o conteúdo esteja sobreposto */
 }
 
 .intro-text {
-  font-size: 35px;
-  margin-top: 20px; /* Ajuste conforme necessário */
-  z-index: 2;
-  position: absolute;
-  top: 25%;
-  width: 100%;
+  font-size: 2em;
+  margin-top: 20px;
+  z-index: 10;
+  color: black;
 }
 
-ion-item {
-  bottom: 23vh;
-  margin-top: 1vh; /* Espaçamento entre os inputs */
-  z-index: 2;
-  --background: transparent;
-  --border-color: transparent;
-  width: 100%;
+.input-item {
+  z-index: 15; /* Elevado para garantir que esteja no topo */
+  width: 100%; /* Ajuste para garantir que os inputs ocupem a largura disponível */
 }
 
 ion-input {
   text-align: center;
-  --padding-start: 0;
-  --padding-end: 0;
-  --padding-top: 0;
-  --padding-bottom: 0;
+  --padding-start: 1em;
+  --padding-end: 1em;
+  --padding-top: 0.5em;
+  --padding-bottom: 0.5em;
   --background: transparent;
   --placeholder-color: #bcbec0;
-  font-size: 40px;
-  --color: #000000; /* Cor do texto digitado, ajuste conforme necessário */
-  font-family: 'Montserrat', sans-serif;  /* Aplica a fonte Montserrat */
-  font-weight: bold;  /* Deixa o texto em negrito */
+  font-size: 1.8em;
+  --color: #000000;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
   border: none;
   box-shadow: none;
+  width: 100%;
+  z-index: 20; /* Certifique-se de que o input esteja no topo */
+
 }
 
-
-
-
 ion-fab-button {
-  width: 100px;
-  height: 100px;
- margin: 3vh;
+  width: 90px;
+  height: 90px;
+  margin: 2vh;
   --background: #4caf50;
   --color: #ffffff;
-
+  z-index: 2;
 }
 
 .large-icon {
-  font-size: 3em; /* Ajuste conforme necessário para o tamanho desejado */
+  font-size: 3em;
 }
 
-
-
-.custom-fab-button{
-  width: 100px;
-  height: 100px;
-  margin: 3vh;
+.custom-fab-button {
+  width: 90px;
+  height: 90px;
+  margin: 2vh;
 }
 
 .person_tela01 {
@@ -134,38 +143,99 @@ ion-fab-button {
   justify-content: center;
   align-items: center;
   position: fixed;
-  top: 45vh;  /* Ajuste a partir do topo */
+  top: 55vh; /* Ajuste para mover o elemento para baixo */
   left: 50%;
-  transform: translateX(-50%);  /* Centralizar horizontalmente */
-  width: 540px;  /* Largura da imagem */
-  z-index: 10;
+  transform: translateX(-50%);
+  width: 450px;
+  z-index: 1; /* Certifique-se de que está abaixo dos inputs */
 }
 
 .footer-bar {
   position: absolute;
-  top: 72vh;  /* Ajuste a posição inicial */
-  left: -25%;  /* Ajuste para garantir cobertura total */
+  top: 75vh;
+  left: -25%;
   width: 150%;
-  height: 50vh;  /* Altura maior para cobertura completa */
-  transform: rotate(20deg);  /* Ajuste o ângulo conforme necessário */
+  height: 50vh;
+  transform: rotate(20deg);
   background-color: #ffffff;
-  z-index: 5;
+  z-index: 0;
 }
 
 /* Media Queries for Responsiveness */
-@media (max-width: 768px) {
-  #container {
-    width: 70%;
-    top: 25vh; /* Ajuste para telas menores */
+@media (max-width: 800px) {
+  .intro-text {
+    font-size: 1.8em;
   }
 
-  .intro-text {
-    font-size: 1em;
-    top: 20%; /* Ajuste conforme necessário */
+  ion-input {
+    font-size: 1.8em;
   }
 
   .person_tela01 {
-    width: 300px;
-    top: 53vh;  /* Ajuste para telas menores */
+    top: 45vh; /* Ajuste para garantir que não bloqueie os inputs em telas menores */
+    width: 450px;
+  }
+
+  ion-fab-button, .custom-fab-button {
+    width: 90px;
+    height: 90px;
+  }
+
+  .large-icon {
+    font-size: 4em;
+  }
+
+
+}
+
+@media (max-width: 500px) {
+  #app-content {
+    display: none;
+  }
+
+  #error-message {
+    display: block;
+  }
+
+  .logo_t1 {
+    top: 5em;
+    width: 50%;
+  }
+
+  #container {
+    width: 100%;
+    top: 20vh;
+  }
+
+  .intro-text {
+    font-size: 1.5em;
+    top: 20%;
+  }
+
+  .person_tela01 {
+    top: 45vh; /* Ajuste para garantir que não bloqueie os inputs em telas menores */
+    width: 450px;
+  }
+
+  ion-fab-button, .custom-fab-button {
+    width: 80px;
+    height: 80px;
+  }
+
+  .large-icon {
+    font-size: 3em;
+  }
+
+  .footer-bar {
+    left: -35%;
+
+  }
+
+  .box_tela01 {
+    width: 90%;
+  }
+
+  ion-input {
+    font-size: 1.5em;
   }
 }

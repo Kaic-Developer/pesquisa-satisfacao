@@ -9,6 +9,7 @@
   })
   export class HomePage implements OnInit {
     nome: string = '';
+    sexo: string = '';
     idade: number | undefined;
 
     constructor(private navCtrl: NavController, private dataService: DataService) {}
@@ -17,6 +18,7 @@
       // Limpar os campos de entrada ao inicializar a página
       this.nome = '';
       this.idade = undefined;
+      this.sexo = '';
 
       // Limpar qualquer dado temporário ao inicializar a página
       await this.dataService.clearTempData();
@@ -27,6 +29,7 @@
         const currentResponse = {
           nome: this.nome,
           idade: this.idade,
+          sexo: this.sexo,
           resposta1: '',
           resposta2: '',
           resposta3: '',

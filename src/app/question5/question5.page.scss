@@ -36,6 +36,7 @@ body, ion-content {
   height: 100%;
   margin: 0;
   font-family: 'Montserrat', sans-serif;
+
 }
 
 .logo_t1 {
@@ -46,9 +47,10 @@ body, ion-content {
   top: 5vh;
   left: 50%;
   transform: translateX(-50%);
-  width: 300px;
+  width: 20%;
   height: auto;
   z-index: 10;
+
 }
 
 .responses {
@@ -57,13 +59,7 @@ body, ion-content {
   flex-direction: column;
   align-items: center;
   flex: 1;
-}
-
-.intro-text {
-  margin-top: 20vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  overflow: hidden
 }
 
 ion-item {
@@ -74,26 +70,29 @@ ion-item {
   width: 100%;
   display: flex;
   justify-content: center;
+
 }
 
 ion-fab-button {
-  width: 100px;
-  height: 100px;
+  width: 60px;
+  height: 60px;
   margin: 5vh 0vh 23vh 5vh;
   --background: #4caf50;
   --color: #ffffff;
+
 }
 
 ion-label {
-  font-size: 40px;
+  font-size: 5vw;
   text-align: center;
   font-family: 'Montserrat', sans-serif;
 }
 
 .custom-fab-button {
-  width: 100px;
-  height: 100px;
+  width: 60px;
+  height: 60px;
   margin: 5vh 5vh 23vh 5vh;
+
 }
 
 .footer-bar {
@@ -106,61 +105,60 @@ ion-label {
   z-index: 4;
 }
 
-@media (max-width: 768px) {
-  .person_tela01 {
-    width: 300px;
-    top: 53vh;
-  }
-}
-
 .custom-radio {
   width: 100%;
   height: 100px;
   cursor: pointer;
+
+
 }
 
 .center-item {
   display: flex;
   justify-content: center;
   align-items: center;
+
 }
 
 .response-text {
   margin-top: 10px;
-  font-size: 40px;
+  font-size: 5vw;
   text-align: center;
   color: white;
   font-family: 'Montserrat-Medium', sans-serif;
   width: 100%;
   white-space: nowrap;
+
 }
 
 /* Estilos específicos para o GIF padrão */
 .default-gif {
   width: auto;
-  height: 1270px;
+  height: 70vh;
   display: flex;
   justify-content: center;
   align-items: center;
   position: fixed;
   left: 50%;
-  top: 105vh;
+  top: 104vh;
   transform: translateX(-50%) translateY(-50%);
   z-index: 10;
+
 }
 
 /* Estilos específicos para os GIFs de resposta */
 .response-gif {
-  width: 400px;
+  width: 42%;
   height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
   position: fixed;
   left: 50%;
-  top: 68vh;
+  top: 67vh;
   transform: translateX(-50%);
   z-index: 5;
+
 }
 
 /* Estilos específicos para o GIF adicional */
@@ -171,11 +169,13 @@ ion-label {
   justify-content: center;
   align-items: center;
   position: fixed;
-  left: 90%;
+  left: 85%;
   top: 79vh;
   transform: translateX(-50%);
   z-index: 5;
 }
+
+
 
 .hidden {
   display: none;
@@ -185,6 +185,7 @@ ion-label {
   display: flex;
   flex-direction: column;
   align-items: center;
+
 }
 
 
@@ -215,3 +216,70 @@ ion-label {
     transform: scale(1);
   }
 }
+
+.intro-text {
+  margin-top: 15vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 2em;
+  text-align: center;
+}
+
+
+
+/* Media Queries for Responsiveness */
+@media (max-width: 600px) {
+  .logo_t1 {
+    width: 30%;
+  }
+
+  .responses {
+    margin-top: 2vh;
+  }
+
+  ion-label {
+    font-size: 6vw;
+  }
+
+  ion-fab-button, .custom-fab-button {
+    width: 50px;
+    height: 50px;
+    margin: 4vh 4vh 20vh 4vh;
+  }
+
+  .footer-bar {
+    top: 85vh;
+  }
+
+  .response-text {
+    font-size: 6vw;
+  }
+
+  .default-gif {
+    height: 60vh;
+    top: 45vh;
+    overflow: hidden
+  }
+
+  .response-gif {
+    width: 70%;
+  }
+
+  .additional-gif {
+    width: 20%;
+  }
+
+  .number_question {
+    width: 50px;
+    height: 50px;
+    font-size: 4vw;
+  }
+
+  .intro-text {
+    margin-top: 10vh;
+    font-size: 6vw;
+  }
+
+}
+

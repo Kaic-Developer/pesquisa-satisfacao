@@ -1,21 +1,34 @@
 <ion-header>
-
-    <ion-img src="assets/img/logo_tela01.png" class="logo_t1"></ion-img>
-
+  <ion-img src="assets/img/logo_tela01.png" class="logo_t1"></ion-img>
 </ion-header>
-
 
 <ion-content class="ion-padding home-page">
   <div id="container" class="bubble">
     <div class="box_tela01">
       <ion-img src="assets/img/box_tela01.png"></ion-img>
-      <p class="intro-text">A sua opinião vale muito para nós</p>
-      <ion-item lines="none">
-        <ion-input [(ngModel)]="nome" placeholder="Qual o seu nome?"></ion-input>
-      </ion-item>
-      <ion-item lines="none">
-        <ion-input type="number" [(ngModel)]="idade" placeholder="Qual a sua idade?"></ion-input>
-      </ion-item>
+      <div class="overlay-content">
+        <p class="intro-text">A sua opinião vale muito para nós</p>
+        <ion-item lines="none" class="input-item">
+          <ion-input [(ngModel)]="nome" placeholder="Qual o seu nome?"></ion-input>
+        </ion-item>
+
+        <ion-item lines="none" class="input-item">
+          <ion-input type="number" [(ngModel)]="idade" placeholder="Qual a sua idade?"></ion-input>
+        </ion-item>
+
+        <ion-list>
+          <ion-item>
+            <ion-select aria-label="Sexo" placeholder="Sexo" [(ngModel)]="sexo">
+              <ion-select-option value="homem">Homem</ion-select-option>
+              <ion-select-option value="mulher">Mulher</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+
+
+
+
+      </div>
     </div>
   </div>
 
@@ -30,7 +43,6 @@
       <ion-icon name="lock-closed" class="large-icon"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-
 </ion-content>
 
 <div class="person_tela01">

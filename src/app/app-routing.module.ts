@@ -19,6 +19,14 @@ const routes: Routes = [
   { path: 'question13', loadChildren: () => import('./question13/question13.module').then(m => m.Question13PageModule) },
   { path: 'thank-you', loadChildren: () => import('./thank-you/thank-you.module').then(m => m.ThankYouPageModule) },
   { path: 'responses', loadChildren: () => import('./responses/responses.module').then(m => m.ResponsesPageModule) },
+  {
+    path: 'responses1',
+    loadChildren: () => import('./responses1/responses1.module').then( m => m.Responses1PageModule)
+  },
+  {
+    path: 'responses2',
+    loadChildren: () => import('./responses2/responses2.module').then( m => m.Responses2PageModule)
+  },
 ];
 
 @NgModule({

@@ -22,7 +22,7 @@ ion-content {
     margin-top: 20px;
 
     ion-item {
-      background: #fff;
+      background: #fff !important; /* Forçar o fundo branco */
       border-radius: 8px;
       margin-bottom: 10px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -105,7 +105,7 @@ ion-content {
     }
 
     .chart {
-      width: 400px;
+      width: 100%;
       height: 300px;
     }
   }

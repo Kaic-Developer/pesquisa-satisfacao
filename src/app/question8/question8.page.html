@@ -5,29 +5,30 @@
 </ion-header>
 
 <ion-content>
-  <ion-label class="intro-text"><b class="number_question">8</b>O tempo de interacção com o colaborador <br>atingiu as suas expectativas?</ion-label>
+  <ion-label class="intro-text"><b class="number_question">8</b>Qualidade do atendimento prestado pelo agente<br> da Polícia Fiscal e,
+    Aduaneira, em representação da<br> Administração Geral Tributária.</ion-label>
   <div class="responses">
     <ion-list>
       <ion-list-header></ion-list-header>
       <ion-item class="center-item">
-        <ion-img [src]="resposta === 'Muito Bom' ? 'assets/img/btn_muitoBomHover.png' : 'assets/img/btn_muitoBom.png'"
+        <ion-img [src]="resposta === 'Plenamente Satisfeito' ? 'assets/img/plenamente_satisfeitoHover.png' : 'assets/img/plenamente_satisfeito.png'"
                  class="custom-radio"
-                 (click)="selecionarResposta('Muito Bom')"></ion-img>
+                 (click)="selecionarResposta('Plenamente Satisfeito')"></ion-img>
       </ion-item>
       <ion-item class="center-item">
-        <ion-img [src]="resposta === 'Bom' ? 'assets/img/btn_bomHover.png' : 'assets/img/btn_bom.png'"
+        <ion-img [src]="resposta === 'Muito Satisfeito' ? 'assets/img/muito_satisfeitoHover.png' : 'assets/img/muito_satisfeito.png'"
                  class="custom-radio"
-                 (click)="selecionarResposta('Bom')"></ion-img>
+                 (click)="selecionarResposta('Muito Satisfeito')"></ion-img>
       </ion-item>
       <ion-item class="center-item">
-        <ion-img [src]="resposta === 'Pouco Satisfeito' ? 'assets/img/btn_poucoSatisfeitoHover.png' : 'assets/img/btn_poucoSatisfeito.png'"
+        <ion-img [src]="resposta === 'Pouco Satisfeito' ? 'assets/img/pouco_satisfeitoHover.png' : 'assets/img/pouco_satisfeito.png'"
                  class="custom-radio"
                  (click)="selecionarResposta('Pouco Satisfeito')"></ion-img>
       </ion-item>
       <ion-item class="center-item">
-        <ion-img [src]="resposta === 'Totalmente Insatisfeito' ? 'assets/img/btn_totalmenteInsatisfeitoHover.png' : 'assets/img/btn_totalmenteInsatisfeito.png'"
+        <ion-img [src]="resposta === 'Nada Satisfeito' ? 'assets/img/nada_satisfeitoHover.png' : 'assets/img/nada_satisfeito.png'"
                  class="custom-radio"
-                 (click)="selecionarResposta('Totalmente Insatisfeito')"></ion-img>
+                 (click)="selecionarResposta('Nada Satisfeito')"></ion-img>
       </ion-item>
     </ion-list>
 

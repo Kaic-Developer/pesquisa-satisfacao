@@ -40,17 +40,17 @@ export class Question8Page implements OnInit {
     this.additionalGifSrc = 'assets/animations/unnamed-2.gif'; // GIF adicional exibido quando uma resposta é selecionada
 
     switch (this.resposta) {
-      case 'Muito Bom':
-        this.gifSrc = 'assets/animations/Muito-Bom.gif';
+      case 'Plenamente Satisfeito':
+        this.gifSrc = 'assets/animations/Plenamente-Satisfeito.gif';
         break;
-      case 'Bom':
-        this.gifSrc = 'assets/animations/Bom.gif';
+      case 'Muito Satisfeito':
+        this.gifSrc = 'assets/animations/Muito-Satisfeito.gif';
         break;
       case 'Pouco Satisfeito':
         this.gifSrc = 'assets/animations/Pouco-Satisfeito.gif';
         break;
-      case 'Totalmente Insatisfeito':
-        this.gifSrc = 'assets/animations/Totalmente-Insatisfeito.gif';
+      case 'Nada Satisfeito':
+        this.gifSrc = 'assets/animations/Nada-Satisfeito.gif';
         break;
       default:
         this.gifSrc = 'assets/animations/unnamed-3.gif'; // GIF padrão
@@ -65,7 +65,7 @@ export class Question8Page implements OnInit {
       currentResponse.resposta8 = this.resposta;
       await this.dataService.set('currentResponse', currentResponse);
 
-      this.navCtrl.navigateForward('/question9');
+      this.navCtrl.navigateForward('/thank-you');
     } else {
       alert('Por favor, selecione uma opção.');
     }

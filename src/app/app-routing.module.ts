@@ -23,10 +23,7 @@ const routes: Routes = [
     path: 'responses1',
     loadChildren: () => import('./responses1/responses1.module').then( m => m.Responses1PageModule)
   },
-  {
-    path: 'responses2',
-    loadChildren: () => import('./responses2/responses2.module').then( m => m.Responses2PageModule)
-  },
+
 ];
 
 @NgModule({

@@ -9,8 +9,10 @@
   })
   export class HomePage implements OnInit {
     nome: string = '';
-    sexo: string = '';
+    genero: string = '';
     idade: number | undefined;
+
+
 
     constructor(private navCtrl: NavController, private dataService: DataService) {}
 
@@ -18,18 +20,18 @@
       // Limpar os campos de entrada ao inicializar a página
       this.nome = '';
       this.idade = undefined;
-      this.sexo = '';
+      this.genero = '';
 
       // Limpar qualquer dado temporário ao inicializar a página
       await this.dataService.clearTempData();
     }
 
     async iniciar(): Promise<void> {
-      if (this.nome && this.idade) {
+      if (this.nome && this.idade && this.genero !== '') {
         const currentResponse = {
           nome: this.nome,
           idade: this.idade,
-          sexo: this.sexo,
+          genero: this.genero,
           resposta1: '',
           resposta2: '',
           resposta3: '',
@@ -38,10 +40,10 @@
           resposta6: '',
           resposta7: '',
           resposta8: '',
-          resposta9: '',
-          resposta10: '',
-          resposta11: '',
-          resposta12: '',
+          // resposta9: '',
+          // resposta10: '',
+          // resposta11: '',
+          // resposta12: '',
 
 
         };

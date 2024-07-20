@@ -217,15 +217,17 @@ ion-label {
   }
 }
 
+
 .intro-text {
+  color: black;
   margin-top: 15vh;
+  margin-bottom: 1vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 2em;
+  font-size: 1.5em;
   text-align: center;
 }
-
 
 
 /* Media Queries for Responsiveness */

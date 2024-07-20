@@ -13,18 +13,14 @@ import 'jspdf-autotable';
 })
 export class Responses1Page implements OnInit {
   questions: string[] = [
-    'Indique a natureza da sua necessidade',
-    'Como avalia o atendimento pelo agente da polícia fiscal?',
-    'Como avalia o tempo de espera que levou para ser atendido?',
-    'Como avalia o tempo de resposta para ser atendida a sua situação?',
-    'O funcionário demonstrou atenção e disponibilidade para responder às suas preocupações?',
-    'As acomodações que encontrou foram-lhe favoráveis?',
-    'Os sistemas tecnológicos estiveram funcionais durante o atendimento?',
-    'O tempo de interacção com o colaborador atingiu as suas expectativas?',
-    'Como avalia a capacidade técnica do colaborador em resolver a sua situação?',
-    'A sua situação foi devidamente resolvida tal como gostaria?',
-    'Como avalia o nível de atendimento na AGT?',
-    'Gostaria de apresentar a sua sugestão?'
+    'Durante o atendimento, qual o nível de cordialidade, empatia e respeito demonstrado pelos funcionários da Administração Geral Tributária.',
+    'Postura comportamental dos funcionários da Administração Geral Tributária.',
+    'Qualidade técnica dos funcionários da Administração Geral Tributária.',
+    'Tempo de espera na resolução do motivo que o levou a visitar Administração Geral Tributária.',
+    'Condições das infraestruturas da Administração Geral Tributária (Ex. climatização, iluminação, cadeiras, placas sinalizadoras e informativas, limpeza e ruídos).',
+    'Operacionalidade das plataformas tecnológicas da Administração Geral Tributária.',
+    'Os mecanismos de comunicação são assertivos, claros e objectivos.',
+    'Qualidade do atendimento prestado pelo agente da Polícia Fiscal e Aduaneira, em representação da Administração Geral Tributária.'
   ];
   responses: any[] = [];
   filteredResponses: any[] = [];
@@ -43,6 +39,7 @@ export class Responses1Page implements OnInit {
   chartOptions: any;
   people: any[] = [];
   selectedFilter: string = 'all';
+  ageFilter: { min: number, max: number } = { min: 0, max: 100 };
 
   constructor(
     private navCtrl: NavController,
@@ -56,12 +53,13 @@ export class Responses1Page implements OnInit {
 
     // Carregue todas as respostas do armazenamento
     this.responses = await this.dataService.getAllResponses();
+    console.log('All responses:', this.responses);
 
     // Prepare a lista de pessoas para o modal de detalhes
     this.people = this.responses.map(response => ({
       nome: response.nome,
       idade: response.idade,
-      sexo: response.sexo,
+      genero: response.genero,
       respostas: this.questions.map((q, i) => ({
         pergunta: q,
         resposta: response[`resposta${i + 1}`]
@@ -77,16 +75,31 @@ export class Responses1Page implements OnInit {
   }
 
   filterResponses() {
+    let filtered = this.responses;
+
+    // Filtrar por data
     if (this.startDate && this.endDate) {
       const start = new Date(this.startDate);
       const end = new Date(this.endDate);
-      this.filteredResponses = this.responses.filter(r => {
+      filtered = filtered.filter(r => {
         const date = new Date(r.date); // Certifique-se de que o campo de data é 'date'
         return date >= start && date <= end;
       });
-    } else {
-      this.filteredResponses = this.responses;
+      console.log('Filtered by date:', filtered);
     }
+
+    // Filtrar por idade
+    filtered = filtered.filter(r => r.idade >= this.ageFilter.min && r.idade <= this.ageFilter.max);
+    console.log('Filtered by age:', filtered);
+
+    this.filteredResponses = filtered;
+    this.applyFilter();
+  }
+
+  applyFilter() {
+    this.responseCounts = this.calculateResponseCounts(this.selectedQuestion, this.selectedFilter);
+    console.log('Response counts:', this.responseCounts);
+    this.renderChart();
   }
 
   openModal(question: string) {
@@ -110,20 +123,15 @@ export class Responses1Page implements OnInit {
     this.isPersonDetailModalOpen = false;
   }
 
-  applyFilter() {
-    this.responseCounts = this.calculateResponseCounts(this.selectedQuestion, this.selectedFilter);
-    this.renderChart();
-  }
-
   calculateResponseCounts(question: string, filter: string): { text: string, count: number, percentage: number }[] {
     const questionIndex = this.questions.indexOf(question) + 1;
     const responseCountMap: { [key: string]: number } = {};
 
     let filtered = this.filteredResponses;
     if (filter === 'male') {
-      filtered = filtered.filter(r => r.sexo === 'Masculino');
+      filtered = filtered.filter(r => r.genero === 'masculino');
     } else if (filter === 'female') {
-      filtered = filtered.filter(r => r.sexo === 'Feminino');
+      filtered = filtered.filter(r => r.genero === 'feminino');
     }
 
     filtered.forEach(response => {
@@ -189,27 +197,30 @@ export class Responses1Page implements OnInit {
     const day = ('0' + dateObj.getDate()).slice(-2);
     const month = ('0' + (dateObj.getMonth() + 1)).slice(-2);
     const year = dateObj.getFullYear();
-    return `${day}/${month}/${year}`;
+    return `${day}_${month}_${year}`;
   }
 
   exportModalAsPDF() {
-    const doc = new jsPDF();
+    const doc = new jsPDF('portrait', 'mm', [297, 420]); // A3 page size
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const margin = 10;
 
     // Título do PDF
     doc.setFontSize(18);
-    doc.text(this.selectedQuestion, 10, 10);
+    const splitTitle = doc.splitTextToSize(this.selectedQuestion, pageWidth - 2 * margin);
+    doc.text(splitTitle, pageWidth / 2, margin * 2, { align: 'center' });
 
     // Subtítulo com o filtro
     const filterText = this.selectedFilter === 'male' ? 'Filtro: Homens' : this.selectedFilter === 'female' ? 'Filtro: Mulheres' : 'Filtro: Todos';
     doc.setFontSize(12);
-    doc.text(filterText, 10, 20);
+    doc.text(filterText, pageWidth / 2, margin * 3.5, { align: 'center' });
 
     // Adicionando o gráfico
     const chartCanvas = this.chartInstance.getDataURL({
       pixelRatio: 2,
       backgroundColor: '#fff'
     });
-    doc.addImage(chartCanvas, 'PNG', 10, 30, 180, 120);
+    doc.addImage(chartCanvas, 'PNG', (pageWidth - 180) / 2, margin * 5, 180, 120);
 
     // Adicionando os dados
     const data = this.responseCounts.map(response => [
@@ -221,20 +232,31 @@ export class Responses1Page implements OnInit {
     (doc as any).autoTable({
       head: [['Resposta', 'Total de Votos', 'Percentagem']],
       body: data,
-      startY: 160,
+      startY: 150,
+      margin: { left: (pageWidth - 180) / 2, right: (pageWidth - 180) / 2 },
+      theme: 'grid',
+      styles: {
+        fontSize: 10,
+        cellPadding: 4
+      },
+      columnStyles: {
+        0: { cellWidth: 60 },
+        1: { cellWidth: 60 },
+        2: { cellWidth: 60 }
+      }
     });
 
-    const totalMen = this.filteredResponses.filter(r => r.sexo === 'Masculino').length;
-    const totalWomen = this.filteredResponses.filter(r => r.sexo === 'Feminino').length;
+    const totalMen = this.filteredResponses.filter(r => r.genero === 'masculino').length;
+    const totalWomen = this.filteredResponses.filter(r => r.genero === 'feminino').length;
     const peopleText = this.selectedFilter === 'male' ? `Total de homens: ${totalMen}` :
       this.selectedFilter === 'female' ? `Total de mulheres: ${totalWomen}` :
         `Total de homens: ${totalMen}, Total de mulheres: ${totalWomen}`;
 
     doc.setFontSize(12);
-    doc.text(peopleText, 10, (doc as any).lastAutoTable.finalY + 10);
+    doc.text(peopleText, pageWidth / 2, (doc as any).lastAutoTable.finalY + 10, { align: 'center' });
 
     // Nome do arquivo PDF
-    const fileName = `${this.formatDate(new Date().toISOString())}-Filtro-${filterText}.pdf`;
+    const fileName = `Respostas_${this.formatDate(this.startDate)}_a_${this.formatDate(this.endDate)}-FILTRADAS.pdf`;
     doc.save(fileName);
   }
 

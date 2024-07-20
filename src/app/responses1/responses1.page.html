@@ -42,6 +42,17 @@
             <ion-select-option value="female">Mulher</ion-select-option>
           </ion-select>
         </ion-item>
+        <ion-item>
+          <ion-label>Idade mínima:</ion-label>
+          <ion-input type="number" [(ngModel)]="ageFilter.min"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Idade máxima:</ion-label>
+          <ion-input type="number" [(ngModel)]="ageFilter.max"></ion-input>
+        </ion-item>
+        <ion-button expand="block" color="secondary" (click)="filterResponses()">
+          Filtrar
+        </ion-button>
         <ion-list *ngIf="responseCounts.length > 0; else noData">
           <ion-item *ngFor="let response of responseCounts">
             <ion-label>
@@ -81,7 +92,7 @@
             <ion-label>
               <h2>{{ person.nome }}</h2>
               <p>Idade: {{ person.idade }}</p>
-              <p>Sexo: {{ person.sexo }}</p>
+              <p>Gênero: {{ person.genero }}</p>
             </ion-label>
           </ion-item>
         </ion-list>

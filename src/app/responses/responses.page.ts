@@ -13,25 +13,20 @@ import * as echarts from 'echarts';
 })
 export class ResponsesPage implements OnInit {
   questions: string[] = [
-    'Indique a natureza da sua necessidade',
-    'Como avalia o atendimento pelo agente da polícia fiscal?',
-    'Como avalia o tempo de espera que levou para ser atendido?',
-    'Como avalia o tempo de resposta para ser atendida a sua situação?',
-    'O funcionário demonstrou atenção e disponibilidade para responder às suas preocupações?',
-    'As acomodações que encontrou foram-lhe favoráveis?',
-    'Os sistemas tecnológicos estiveram funcionais durante o atendimento?',
-    'O tempo de interacção com o colaborador atingiu as suas expectativas?',
-    'Como avalia a capacidade técnica do colaborador em resolver a sua situação?',
-    'A sua situação foi devidamente resolvida tal como gostaria?',
-    'Como avalia o nível de atendimento na AGT?',
-    'Gostaria de apresentar a sua sugestão?'
+    'Durante o atendimento, qual o nível de cordialidade, empatia e respeito demonstrado pelos funcionários da Administração Geral Tributária.',
+    'Postura comportamental dos funcionários da Administração Geral Tributária.',
+    'Qualidade técnica dos funcionários da Administração Geral Tributária.',
+    'Tempo de espera na resolução do motivo que o levou a visitar Administração Geral Tributária.',
+    'Condições das infraestruturas da Administração Geral Tributária (Ex. climatização, iluminação, cadeiras, placas sinalizadoras e informativas, limpeza e ruídos).',
+    'Operacionalidade das plataformas tecnológicas da Administração Geral Tributária.',
+    'Os mecanismos de comunicação são assertivos, claros e objectivos.',
+    'Qualidade do atendimento prestado pelo agente da Polícia Fiscal e Aduaneira, em representação da Administração Geral Tributária.'
   ];
   responses: any[] = [];
   filteredResponses: any[] = [];
   showContent: boolean = false;
   startDate: string = '';
   endDate: string = '';
-  selectedFilter: string = 'all';
 
   constructor(
     private navCtrl: NavController,
@@ -40,63 +35,81 @@ export class ResponsesPage implements OnInit {
   ) {}
 
   async ngOnInit() {
-    // Carregar respostas no início
-    this.responses = await this.dataService.getAllResponses();
-    this.filteredResponses = this.responses;
+    // Define a data atual para startDate e endDate
+    const today = new Date().toISOString().substring(0, 10);
+    this.startDate = today;
+    this.endDate = today;
+
+    // Verificar estado de login
+    const isLoggedIn = await this.dataService.get('isLoggedIn');
+    if (isLoggedIn) {
+      this.showContent = true;
+      this.responses = await this.dataService.getAllResponses();
+      this.filterResponses();
+    }
   }
 
   async ionViewWillEnter() {
-    const alert = await this.alertController.create({
-      header: 'Senha necessária',
-      message: 'Digite a senha para acessar as respostas:',
-      inputs: [
-        {
-          name: 'password',
-          type: 'password',
-          placeholder: 'Senha',
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          handler: () => {
-            this.navCtrl.navigateRoot('/home');
+    const isLoggedIn = await this.dataService.get('isLoggedIn');
+    if (!isLoggedIn) {
+      const alert = await this.alertController.create({
+        header: 'Senha necessária',
+        message: 'Digite a senha para acessar as respostas:',
+        inputs: [
+          {
+            name: 'password',
+            type: 'password',
+            placeholder: 'Senha',
           },
-        },
-        {
-          text: 'Entrar',
-          handler: async (data) => {
-            if (data.password === 'agt@01') {
-              this.showContent = true;
-              try {
-                this.responses = await this.dataService.getAllResponses();
-                this.filteredResponses = this.responses;
-                console.log('Respostas carregadas:', this.responses); // Adicione este log
-              } catch (error) {
-                console.error('Erro ao carregar respostas:', error);
+        ],
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            handler: () => {
+              this.navCtrl.navigateRoot('/home');
+            },
+          },
+          {
+            text: 'Entrar',
+            handler: async (data) => {
+              if (data.password === 'agt@01') {
+                this.showContent = true;
+                await this.dataService.set('isLoggedIn', true);
+                try {
+                  this.responses = await this.dataService.getAllResponses();
+                  this.filterResponses();
+                  console.log('Respostas carregadas:', this.responses);
+                } catch (error) {
+                  console.error('Erro ao carregar respostas:', error);
+                  const errorAlert = await this.alertController.create({
+                    header: 'Erro',
+                    message: 'Erro ao carregar respostas. Tente novamente.',
+                    buttons: ['OK'],
+                  });
+                  await errorAlert.present();
+                }
+              } else {
                 const errorAlert = await this.alertController.create({
                   header: 'Erro',
-                  message: 'Erro ao carregar respostas. Tente novamente.',
+                  message: 'Senha incorreta!',
                   buttons: ['OK'],
                 });
                 await errorAlert.present();
+                this.navCtrl.navigateRoot('/home');
               }
-            } else {
-              const errorAlert = await this.alertController.create({
-                header: 'Erro',
-                message: 'Senha incorreta!',
-                buttons: ['OK'],
-              });
-              await errorAlert.present();
-              this.navCtrl.navigateRoot('/home');
-            }
+            },
           },
-        },
-      ],
-    });
+        ],
+      });
 
-    await alert.present();
+      await alert.present();
+    }
+  }
+
+  async logout() {
+    await this.dataService.clearLoginStatus();
+    this.navCtrl.navigateRoot('/home');
   }
 
   filterResponses() {
@@ -107,10 +120,10 @@ export class ResponsesPage implements OnInit {
         const date = new Date(r.date); // Certifique-se de que o campo de data é 'date'
         return date >= start && date <= end;
       });
-      console.log('Respostas filtradas:', this.filteredResponses); // Adicione este log
+      console.log('Respostas filtradas:', this.filteredResponses);
     } else {
       this.filteredResponses = this.responses;
-      console.log('Sem filtro de data, respostas:', this.filteredResponses); // Adicione este log
+      console.log('Sem filtro de data, respostas:', this.filteredResponses);
     }
   }
 
@@ -205,16 +218,22 @@ export class ResponsesPage implements OnInit {
           pixelRatio: 2,
           backgroundColor: '#fff'
         }));
-      }, 1000); // Aguarda 1 segundo para garantir que o gráfico seja renderizado
+      }, 1000);
     });
   }
 
   async downloadPDF() {
     const doc = new jsPDF({
       orientation: 'landscape',
-      unit: 'px', // Define a unidade como pixels
-      format: [550, 500] // Define a largura e altura em pixels
+      unit: 'px',
+      format: [550, 500]
     });
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const margin = 40;
+    const chartWidth = 500;
+    const chartHeight = 300;
 
     const startDateFormatted = this.formatDate(this.startDate);
     const endDateFormatted = this.formatDate(this.endDate);
@@ -224,10 +243,11 @@ export class ResponsesPage implements OnInit {
       if (i > 0) doc.addPage();
 
       doc.setFontSize(18);
-      doc.text(question, 40, 40);
+      const splitTitle = doc.splitTextToSize(question, pageWidth - 2 * margin);
+      doc.text(splitTitle, pageWidth / 2, 40, { align: 'center' });
 
       const chartImage = await this.renderChart(question, this.filteredResponses);
-      doc.addImage(chartImage, 'PNG', 40, 60, 500, 300); // Ajustado para a largura do a4
+      doc.addImage(chartImage, 'PNG', (pageWidth - chartWidth) / 2, 60, chartWidth, chartHeight);
 
       const responseCounts = this.calculateResponseCounts(question, this.filteredResponses);
       const data = responseCounts.map(response => [
@@ -245,6 +265,7 @@ export class ResponsesPage implements OnInit {
           fontSize: 10,
           cellPadding: 4
         },
+        margin: { left: (pageWidth - chartWidth) / 2 },
         columnStyles: {
           0: { cellWidth: 200 },
           1: { cellWidth: 60 },
@@ -252,14 +273,12 @@ export class ResponsesPage implements OnInit {
         }
       });
 
-      const totalMen = this.filteredResponses.filter(r => r.sexo === 'Masculino').length;
-      const totalWomen = this.filteredResponses.filter(r => r.sexo === 'Feminino').length;
-      const peopleText = this.selectedFilter === 'male' ? `Total de homens: ${totalMen}` :
-        this.selectedFilter === 'female' ? `Total de mulheres: ${totalWomen}` :
-          `Total de homens: ${totalMen}, Total de mulheres: ${totalWomen}`;
+      const totalMen = this.filteredResponses.filter(r => r.genero === 'masculino').length;
+      const totalWomen = this.filteredResponses.filter(r => r.genero === 'feminino').length;
+      const peopleText = `Total de homens: ${totalMen}, Total de mulheres: ${totalWomen}`;
 
       doc.setFontSize(12);
-      doc.text(peopleText, 40, (doc as any).lastAutoTable.finalY + 20);
+      doc.text(peopleText, pageWidth / 2, (doc as any).lastAutoTable.finalY + 20, { align: 'center' });
     }
 
     const fileName = `Respostas_${startDateFormatted}_a_${endDateFormatted}.pdf`;

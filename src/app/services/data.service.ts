@@ -37,4 +37,9 @@ export class DataService {
   async clearTempData(): Promise<void> {
     await this.set('currentResponse', null);
   }
+
+  // Adicionado para gerenciar o estado de login
+  async clearLoginStatus(): Promise<void> {
+    await this.set('isLoggedIn', false);
+  }
 }

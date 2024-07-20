@@ -1,6 +1,12 @@
 <ion-header *ngIf="showContent">
   <ion-toolbar>
     <ion-title class="title_response">Respostas dos Usuários</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="white" (click)="logout()">
+        <ion-icon slot="start" name="log-out-outline"></ion-icon>
+        Sair
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -44,37 +50,43 @@
   </ion-content>
 </ng-template>
 
-<style>.datetime-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
+<style>
+  .datetime-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
 
-.button-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 
-ion-button {
-  --border-radius: 12px;
-  --padding-start: 20px;
-  --padding-end: 20px;
-  --background: #3880ff;
-  --color: #fff;
-  text-transform: uppercase;
-}
+  ion-button {
+    --border-radius: 12px;
+    --padding-start: 20px;
+    --padding-end: 20px;
+    --background: #3880ff;
+    --color: #fff;
+    text-transform: uppercase;
+  }
 
-ion-icon {
-  font-size: 1.2em;
-}
+  ion-button[color="danger"] {
+    --background: #eb445a;
+    --color: #fff;
+  }
 
-.chart-container {
-  position: relative;
-  width: 800px;
-  height: 500px;
-  margin: 0 auto;
-  text-align: center;
-}
+  ion-icon {
+    font-size: 1.2em;
+  }
+
+  .chart-container {
+    position: relative;
+    width: 800px;
+    height: 500px;
+    margin: 0 auto;
+    text-align: center;
+  }
 </style>
